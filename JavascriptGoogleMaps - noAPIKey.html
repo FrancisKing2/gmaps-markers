@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Use lastest version of Internet Explorer -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <!-- Insert other header tags here -->
+    </head>
+<body>
+
+<div id="map" style="width:100%;height:900px;"></div>
+
+<script>
+
+var map;
+var markers = [];
+
+function myMap() {
+  var mapCanvas = document.getElementById("map");
+  var myCenter=new google.maps.LatLng(51.508742,-0.120850);
+  var mapOptions = {center: myCenter, zoom: 5};
+  
+  map = new google.maps.Map(mapCanvas, mapOptions);
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(map, event.latLng);
+  });
+}
+
+function placeMarker(map, location) {
+  // Create a new marker
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+
+  // Remember the marker
+  markers.push(marker);
+
+  // Add an info window
+  var infowindow = new google.maps.InfoWindow({
+    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);
+  window.external.Test(location.lat(),location.lng());
+}
+     
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+   for (var i = 0; i < markers.length; i++) {
+       markers[i].setMap(map);
+   }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+    setMapOnAll(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+    setMapOnAll(map);
+}
+
+function deleteMarkers() {
+    clearMarkers();
+    markers = [];
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=APIKEY&callback=myMap"></script>
+<!--
+To use this code on your website, get a free API key from Google.
+Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
+-->
+
+</body>
+</html>
